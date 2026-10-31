@@ -15,7 +15,13 @@
 		"jsx": "react-jsx",
 		"types": ["vite-plugin-svgr/client", "vitest/globals"],
 		"paths": {
-			"@/*": ["./src/*"]
+			"@/*": ["./src/*"],
+			"@api/*": ["./src/shared/api/*"],
+			"@assets/*": ["./src/shared/assets/*"],
+			"@components/*": ["./src/shared/components/*"],
+			"@pages/*": ["./src/pages/*"],
+			"@store/*": ["./src/shared/store/*"],
+			"@temp/*": ["./src/shared/temp/*"]
 		},
 
 		/* Linting */
