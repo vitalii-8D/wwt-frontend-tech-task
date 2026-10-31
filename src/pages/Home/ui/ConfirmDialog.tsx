@@ -22,12 +22,12 @@ export const ConfirmDialog = ({
 		<Dialog
 			onClose={onCancel}
 			labelledBy={titleId}
-			className="m-auto w-full max-w-5xl rounded-card bg-white p-8 shadow-card backdrop:bg-black/40"
+			className="m-auto w-[calc(100%-2rem)] max-w-5xl rounded-card bg-white p-4 shadow-card sm:w-full sm:p-8 backdrop:bg-black/40"
 		>
 			<header className="relative flex items-center justify-center">
 				<h2
 					id={titleId}
-					className="text-center text-[40px] font-medium"
+					className="px-10 text-center text-2xl font-medium sm:px-0 sm:text-3xl lg:text-[40px]"
 				>
 					{t('confirm.title')}
 				</h2>
@@ -35,23 +35,23 @@ export const ConfirmDialog = ({
 					type="button"
 					aria-label={t('close')}
 					onClick={onCancel}
-					className="absolute right-0"
+					className="absolute right-0 flex size-11 items-center justify-center lg:size-auto"
 				>
 					<CloseIcon aria-hidden="true" />
 				</button>
 			</header>
-			<div className="mt-[120px] flex justify-center gap-8">
+			<div className="mt-8 flex flex-col-reverse gap-3 sm:mt-16 sm:flex-row sm:justify-center sm:gap-8 lg:mt-[120px]">
 				<button
 					type="button"
 					onClick={onDiscard}
-					className="w-[280px] rounded-card border-2 border-grey-200 bg-white px-[49px] py-[26px] font-semibold text-grey-400"
+					className="w-full rounded-card border-2 border-grey-200 bg-white px-6 py-4 sm:px-[49px] sm:py-[26px] font-semibold text-grey-400 sm:w-[280px]"
 				>
 					{t('confirm.no')}
 				</button>
 				<button
 					type="button"
 					onClick={onConfirm}
-					className="w-[280px] rounded-card bg-brand px-[49px] py-[26px] font-semibold text-white"
+					className="w-full rounded-card bg-brand px-6 py-4 sm:px-[49px] sm:py-[26px] font-semibold text-white sm:w-[280px]"
 				>
 					{t('confirm.yes')}
 				</button>

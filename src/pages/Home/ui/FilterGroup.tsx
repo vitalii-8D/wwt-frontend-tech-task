@@ -25,11 +25,10 @@ export const FilterGroup = ({
 	const allId = useId()
 	const selected = draft[item.id]
 	const isAllSelected = item.options.every(option => selected?.has(option.id))
-	const rows = Math.ceil(item.options.length / 3)
 
 	return (
-		<fieldset className="border-b border-grey-200 py-8">
-			<legend className="float-left mb-6 flex items-center gap-2 text-2xl font-medium">
+		<fieldset className="border-b border-grey-200 py-6 sm:py-8">
+			<legend className="float-left mb-4 flex flex-wrap items-center gap-2 text-xl font-medium sm:mb-6 sm:text-2xl">
 				{item.allowAll ? (
 					<div className="flex items-center gap-4">
 						<input
@@ -49,10 +48,7 @@ export const FilterGroup = ({
 					</span>
 				) : null}
 			</legend>
-			<div
-				className="grid clear-both grid-flow-col grid-cols-3 gap-x-8 gap-y-4"
-				style={{ gridTemplateRows: `repeat(${rows}, auto)` }}
-			>
+			<div className="clear-both columns-1 gap-x-8 sm:columns-2 lg:columns-3">
 				{item.options.map(option => (
 					<OptionItem
 						itemId={item.id}

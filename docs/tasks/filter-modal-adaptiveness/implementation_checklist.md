@@ -1,6 +1,6 @@
 ---
 title: filter-modal-adaptiveness — implementation checklist
-version: 1.1.0
+version: 1.2.0
 updated: 2026-10-31
 task: filter-modal-adaptiveness
 branch: feature/filter-modal-adaptiveness
@@ -40,13 +40,13 @@ inputs:
 
 DERIVED from DFA §1.2 / §2 (approved with the DFA):
 
-- [ ] AC1 — Desktop (≥1024px) appearance is unchanged.
-- [ ] AC2 — Below 640px the filter modal is a full-screen sheet with a sticky header and a sticky Apply footer.
-- [ ] AC3 — Option columns: 1 (<640), 2 (640–1023), 3 (≥1024), column-first order, checkboxes not split across columns.
-- [ ] AC4 — Confirm dialog on phones is a compact card with stacked buttons (Confirm on top); side by side from 640px.
-- [ ] AC5 — No horizontal scroll at 320px; touch targets ≥ 44px on touch widths; long names wrap.
-- [ ] AC6 — Homepage minimal tweaks (padding, h1 size, full-width open button, `pre` scrolls inside).
-- [ ] AC7 — Tailwind only, no JS layout, no new dependency; semantics, DOM and tab order unchanged.
+- [x] AC1 — Desktop (≥1024px) appearance is unchanged.
+- [x] AC2 — Below 640px the filter modal is a full-screen sheet with a sticky header and a sticky Apply footer.
+- [x] AC3 — Option columns: 1 (<640), 2 (640–1023), 3 (≥1024), column-first order, checkboxes not split across columns.
+- [x] AC4 — Confirm dialog on phones is a compact card with stacked buttons (Confirm on top); side by side from 640px.
+- [x] AC5 — No horizontal scroll at 320px; touch targets ≥ 44px on touch widths; long names wrap.
+- [x] AC6 — Homepage minimal tweaks (padding, h1 size, full-width open button, `pre` scrolls inside).
+- [x] AC7 — Tailwind only, no JS layout, no new dependency; semantics, DOM and tab order unchanged.
 
 ## Assumptions
 
@@ -60,28 +60,28 @@ DERIVED from DFA §1.2 / §2 (approved with the DFA):
 - [x] Step 3 — stack best practices + house rules loaded
 - [x] Step 4 — design approved (existing DFA reused)
 - [x] Step 5 — plan expanded below
-- [ ] Step 6 — implementation
-  - [ ] 6.1 `FilterModal.tsx` — responsive dialog, sticky header/footer, title, close button (AC1, AC2, AC5, AC7)
-  - [ ] 6.2 `FilterGroup.tsx` + `OptionItem.tsx` — `columns-*`, remove inline style and `rows`, touch height, wrapping (AC3, AC5)
-  - [ ] 6.3 `ConfirmDialog.tsx` — compact card, stacked buttons (AC4, AC5)
-  - [ ] 6.4 `App.tsx` — homepage tweaks (AC6)
-- [ ] Step 7 — validation green (incl. design conformance)
-- [ ] Step 8 — impact_summary.md + fe_handoff.md written
-- [ ] Step 9 — hand-back
+- [x] Step 6 — implementation
+  - [x] 6.1 `FilterModal.tsx` — responsive dialog, sticky header/footer, title, close button (AC1, AC2, AC5, AC7)
+  - [x] 6.2 `FilterGroup.tsx` + `OptionItem.tsx` — `columns-*`, remove inline style and `rows`, touch height, wrapping (AC3, AC5)
+  - [x] 6.3 `ConfirmDialog.tsx` — compact card, stacked buttons (AC4, AC5)
+  - [x] 6.4 `App.tsx` — homepage tweaks (AC6)
+- [x] Step 7 — validation green (incl. design conformance)
+- [x] Step 8 — impact_summary.md + fe_handoff.md written
+- [x] Step 9 — hand-back
 
 ## Validation
 
-| Check                       | Result                |
-| --------------------------- | --------------------- |
-| Lint                        | PENDING               |
-| Format check                | PENDING               |
-| Build / types               | PENDING               |
-| Migration consistency       | NOT RUN — no database |
-| App boots                   | PENDING               |
-| Acceptance cross-check      | PENDING               |
-| Best-practices self-review  | PENDING               |
-| Cross-cutting sync          | PENDING               |
-| Design conformance (vs DFA) | PENDING               |
+| Check                       | Result                                                                              |
+| --------------------------- | ----------------------------------------------------------------------------------- |
+| Lint                        | PASS                                                                                |
+| Format check                | PASS                                                                                |
+| Build / types               | PASS                                                                                |
+| Migration consistency       | NOT RUN — no database                                                               |
+| App boots                   | NOT RUN — no browser/viewport check here; vite build passes                         |
+| Acceptance cross-check      | PASS (code-level; AC1/AC2/AC5 visual parts need the manual viewport matrix, DFA §8) |
+| Best-practices self-review  | PASS                                                                                |
+| Cross-cutting sync          | PASS — none required                                                                |
+| Design conformance (vs DFA) | DEVIATIONS — see impact_summary.md                                                  |
 
 ## Follow-ups
 

@@ -43,13 +43,13 @@ export const FilterModal = ({ items, onClose }: FilterModalProps) => {
 		<Dialog
 			onClose={onClose}
 			labelledBy={titleId}
-			className="m-auto max-h-dvh w-full max-w-7xl overflow-y-auto rounded-card bg-white p-8 backdrop:bg-black/40"
+			className="m-0 h-dvh max-h-none w-full max-w-none scroll-py-20 overflow-y-auto rounded-none bg-white p-4 backdrop:bg-black/40 sm:m-auto sm:h-auto sm:max-h-dvh sm:max-w-7xl sm:rounded-card sm:p-6 lg:p-8"
 		>
 			<form onSubmit={handleSubmit}>
-				<header className="relative flex items-center justify-center border-b border-grey-200 pb-8">
+				<header className="sticky top-0 z-10 -mt-4 flex items-center justify-center border-b border-grey-200 bg-white pt-4 pb-4 sm:relative sm:mt-0 sm:pt-0 sm:pb-8">
 					<h2
 						id={titleId}
-						className="text-[40px] font-medium"
+						className="px-10 text-center text-2xl font-medium sm:px-0 sm:text-3xl lg:text-[40px]"
 					>
 						{t('title')}
 					</h2>
@@ -58,7 +58,7 @@ export const FilterModal = ({ items, onClose }: FilterModalProps) => {
 						type="button"
 						aria-label={t('close')}
 						onClick={onClose}
-						className="absolute right-0"
+						className="absolute right-0 flex size-11 items-center justify-center lg:size-auto"
 					>
 						<CloseIcon aria-hidden="true" />
 					</button>
@@ -76,10 +76,10 @@ export const FilterModal = ({ items, onClose }: FilterModalProps) => {
 					/>
 				))}
 
-				<footer className="mt-8 flex justify-center">
+				<footer className="sticky bottom-0 z-10 -mb-4 flex justify-center border-t border-grey-200 bg-white pt-4 pb-[max(1rem,env(safe-area-inset-bottom))] sm:static sm:mt-8 sm:mb-0 sm:border-0 sm:pt-0 sm:pb-0">
 					<button
 						type="submit"
-						className="w-[184px] rounded-card bg-brand py-4 font-semibold text-white"
+						className="w-full rounded-card bg-brand py-4 font-semibold text-white"
 					>
 						{t('apply')}
 					</button>

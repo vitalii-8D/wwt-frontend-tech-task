@@ -18,7 +18,7 @@ export const OptionItem = ({
 		<div
 			key={option.id}
 			title={option.description}
-			className="flex items-center gap-4"
+			className="flex min-h-11 break-inside-avoid items-center gap-4 pb-4 lg:min-h-0"
 		>
 			<input
 				id={`${itemId}-${option.id}`}
@@ -27,7 +27,12 @@ export const OptionItem = ({
 				checked={isChecked}
 				onChange={() => onToggle(itemId, option.id)}
 			/>
-			<label htmlFor={`${itemId}-${option.id}`}>{option.name}</label>
+			<label
+				htmlFor={`${itemId}-${option.id}`}
+				className="min-w-0 break-words"
+			>
+				{option.name}
+			</label>
 			{option.description ? (
 				<span title={option.description}>
 					<InfoIcon aria-hidden="true" />

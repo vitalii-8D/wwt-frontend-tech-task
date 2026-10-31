@@ -14,19 +14,19 @@ export const App = () => {
 	const [isOpen, setOpen] = useState(false)
 
 	return (
-		<main className="mx-auto flex min-h-dvh max-w-3xl flex-col items-center gap-8 p-8 font-sans">
+		<main className="mx-auto flex min-h-dvh max-w-3xl flex-col items-center gap-6 p-4 font-sans sm:gap-8 sm:p-8">
 			{/* eslint-disable-next-line i18next/no-literal-string */}
-			<h1 className="text-4xl text-gray-600">
+			<h1 className="text-center text-2xl text-gray-600 sm:text-4xl">
 				WinWinTravel frontend test task
 			</h1>
 
-			<section className="flex flex-col items-center gap-4">
+			<section className="flex w-full flex-col items-center gap-4">
 				<button
 					type="button"
 					aria-haspopup="dialog"
 					disabled={isPending || isError}
 					onClick={() => setOpen(true)}
-					className="rounded-card bg-brand px-8 py-4 font-semibold text-white disabled:opacity-50"
+					className="w-full rounded-card bg-brand px-8 py-4 font-semibold text-white disabled:opacity-50 sm:w-auto"
 				>
 					{t('open')}
 				</button>
@@ -47,7 +47,7 @@ export const App = () => {
 
 			<section className="w-full">
 				<h2 className="mb-2 text-xl font-medium">{t('debugTitle')}</h2>
-				<pre className="overflow-auto rounded-card bg-grey-50 p-4 text-sm">
+				<pre className="max-w-full overflow-auto rounded-card bg-grey-50 p-4 text-sm">
 					<code>{JSON.stringify(filter, null, 2)}</code>
 				</pre>
 			</section>
