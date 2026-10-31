@@ -6,19 +6,23 @@
 
 ## Decision log
 
-| #   | Decision                                                                                                                                                                                  | Options considered                      | Decided by                        |
-| --- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------- | --------------------------------- |
-| 1   | Saved filter lives in a zustand store, **in-memory only** (no `persist`)                                                                                                                  | in-memory / `persist` to localStorage   | User                              |
-| 2   | Modal and confirmation built with native `<dialog>` + Tailwind                                                                                                                            | native `<dialog>` / headless library    | User                              |
-| 3   | Filter data loaded with `useQuery` over a mock async `fetchFilters()`                                                                                                                     | `useQuery` / sync JSON import           | User                              |
-| 4   | Figma is inspected for layout                                                                                                                                                             | inspect / skip                          | User; done, results in section 10 |
-| 5   | Checkbox states: hover fills `#F2F2F2`, focus changes the border to the brand orange `#FF5F00`, checked fills the grey.500 text color `#31393C` with a tick in the modal background color | n/a                                     | User                              |
-| 6   | The confirm dialog sits centered over the filter dialog with a dimmed backdrop, using the native `::backdrop`                                                                             | native `::backdrop` / custom overlay    | User                              |
-| 7   | Scope: only the button and the JSON view on the homepage; pages and components not mentioned in the README (e.g. the Figma hero) are out of scope                                         | match the hero / minimal button         | User                              |
-| 8   | Stricter alias convention: add `@api`, `@assets`, `@components`, `@pages`, `@store`, `@temp` (and any folder created later) to `tsconfig.json`                                            | `@/` only / `@folder/` aliases          | User                              |
-| 9   | The zustand store lives in `src/shared/store`                                                                                                                                             | `pages/Home/model` / `shared/store`     | User                              |
-| 10  | CI: no test step is added; the pipeline keeps its lint and format checks                                                                                                                  | add `vitest run` / lint and format only | User                              |
-| 11  | No tests are required: section 8 is empty, no `setupTest.ts` polyfill                                                                                                                     | write tests / no tests                  | User                              |
+| #   | Decision                                                                                                                                                                                  | Options considered                          | Decided by                        |
+| --- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------- | --------------------------------- |
+| 1   | Saved filter lives in a zustand store, **in-memory only** (no `persist`)                                                                                                                  | in-memory / `persist` to localStorage       | User                              |
+| 2   | Modal and confirmation built with native `<dialog>` + Tailwind                                                                                                                            | native `<dialog>` / headless library        | User                              |
+| 3   | Filter data loaded with `useQuery` over a mock async `fetchFilters()`                                                                                                                     | `useQuery` / sync JSON import               | User                              |
+| 4   | Figma is inspected for layout                                                                                                                                                             | inspect / skip                              | User; done, results in section 10 |
+| 5   | Checkbox states: hover fills `#F2F2F2`, focus changes the border to the brand orange `#FF5F00`, checked fills the grey.500 text color `#31393C` with a tick in the modal background color | n/a                                         | User                              |
+| 6   | The confirm dialog sits centered over the filter dialog with a dimmed backdrop, using the native `::backdrop`                                                                             | native `::backdrop` / custom overlay        | User                              |
+| 7   | Scope: only the button and the JSON view on the homepage; pages and components not mentioned in the README (e.g. the Figma hero) are out of scope                                         | match the hero / minimal button             | User                              |
+| 8   | Stricter alias convention: add `@api`, `@assets`, `@components`, `@pages`, `@store`, `@temp` (and any folder created later) to `tsconfig.json`                                            | `@/` only / `@folder/` aliases              | User                              |
+| 9   | The zustand store lives in `src/shared/store`                                                                                                                                             | `pages/Home/model` / `shared/store`         | User                              |
+| 10  | CI: no test step is added; the pipeline keeps its lint and format checks                                                                                                                  | add `vitest run` / lint and format only     | User                              |
+| 11  | No tests are required: section 8 is empty, no `setupTest.ts` polyfill                                                                                                                     | write tests / no tests                      | User                              |
+| 12  | "Use old filter" closes both dialogs without saving; the confirm's close icon and Esc only close the confirm and return to the filter modal                                               | cancel = back to modal / discard everything | User                              |
+| 13  | Clicking the backdrop of a dialog behaves like that dialog's own close button                                                                                                             | ignore / close on backdrop                  | User                              |
+| 14  | Each option shows its `description` as a native `title` tooltip on hover                                                                                                                  | native `title` / custom tooltip             | User                              |
+| 15  | svgr accepts both plain `.svg` and `.svg?react` imports (`include` array); the original `'**/*.svg'` alone never matched `?react` imports and crashed the icons                           | `?react` only / both                        | User                              |
 
 ## 1. Feature description
 
@@ -95,10 +99,13 @@ sequenceDiagram
 
     User->>Modal: click Apply
     Modal->>Confirm: open
-    User->>Confirm: Cancel / Esc
+    User->>Confirm: close icon / Esc / confirm backdrop click
     Confirm->>Modal: onCancel()
     Note over Modal,Store: Store untouched; draft kept so the user can keep editing
-    User->>Modal: Close / Esc
+    User->>Confirm: Use old filter
+    Confirm->>Modal: onDiscard() = onClose()
+    Note over Modal,Store: Both dialogs unmount, store untouched, draft discarded
+    User->>Modal: Close / Esc / backdrop click
     Modal->>Modal: onClose() unmount, draft discarded
 ```
 
@@ -151,21 +158,25 @@ Create `src/pages/Home/model/filterDraft.ts`:
 
 Module-level components, arrow functions, named exports. `Dialog` is generic and lives in `src/shared/components/Dialog/`; the filter-specific components live under `src/pages/Home/ui/`.
 
-- `Dialog` (`@components/Dialog`): thin wrapper over `<dialog>`; props `{ onClose: () => void; children }`. Calls `ref.current.showModal()` in a mount effect and listens to the native `close`/`cancel` events to call `onClose`. Labelled via `aria-labelledby`.
+- `Dialog` (`@components/Dialog`): thin wrapper over `<dialog>`; props `{ onClose: () => void; children }`. Calls `ref.current.showModal()` in a mount effect and calls `onClose` from the `close` event, ignoring events whose target is a nested dialog (React bubbles `close` through the tree). A click whose target is the `<dialog>` itself and whose coordinates fall outside its bounding rect (backdrop) calls `dialog.close()`, i.e. acts like the close button. Extra props: `labelledBy` (`aria-labelledby`) and `className`.
 - `FilterModal.tsx`: props `{ items: FilterItem[]; onClose: () => void }`.
   - `const [draft, setDraft] = useState(() => toDraft(useFilterStore.getState().filter))`.
   - `const [isConfirming, setConfirming] = useState(false)`.
   - Renders `<Dialog><form onSubmit>` with one `FilterGroup` per item, plus Close and Apply (`type="submit"`) buttons. `onSubmit` does `preventDefault()` then `setConfirming(true)`.
   - On confirm: `setFilter(toSearchRequestFilter(draft, items))`, then `onClose()`.
   - Renders `<ConfirmDialog>` only while `isConfirming` (ternary).
-- `FilterGroup.tsx`: `<fieldset>` with `<legend>{item.name}</legend>`, optional description, and a checkbox plus `<label>` per option (name and description). For `allowAll`, a first "All" checkbox that calls `toggleAll`. Checked state is `draft[item.id]?.has(option.id)`.
-- `ConfirmDialog.tsx`: props `{ onConfirm; onCancel }`; wraps `Dialog` with title, text, Confirm and Cancel.
+- `FilterGroup.tsx`: `<fieldset>` with a `<legend>` (floated left, followed by `clear-both` on the grid) holding the name, an info icon whose `title` is the filter description, and, for `allowAll`, an "All" checkbox that calls `toggleAll`. Options are rendered by `OptionItem.tsx` (checkbox + `<label>`; its row carries `title={option.description}` for the hover tooltip). Checked state is `draft[item.id]?.has(option.id)`.
+- `ConfirmDialog.tsx`: props `{ onConfirm; onCancel; onDiscard }`; wraps `Dialog` with a title and two buttons. "Apply new filter" calls `onConfirm`; "Use old filter" calls `onDiscard` (wired to the filter modal's `onClose`, closing everything); the close icon, Esc and a backdrop click call `onCancel` (confirm only).
 - Update `App.tsx` (the homepage); scope is only the open button and the JSON view (decision 7), not the Figma hero.
   - Keep the existing `<section>`/`<h1>`.
   - `useFiltersQuery()`; "Filters" button (`aria-haspopup="dialog"`) disabled while the query is loading or failed; `useState` for open.
   - `{isOpen && data ? <FilterModal items={data} onClose={...} /> : null}`.
   - A `<section>` with a heading and `<pre><code>{JSON.stringify(filter, null, 2)}</code></pre>`, where `filter = useFilterStore((state) => state.filter)`.
   - Show a loading or error message with a retry button (`refetch`).
+
+### 4.4a. Vite config
+
+- `vite.config.ts`: `svgr({ include: ['**/*.svg', '**/*.svg?react'] })`. The original `'**/*.svg'` did not match `?react` imports, so `import Icon from '...svg?react'` resolved to a URL string and React crashed on render. Both import styles now yield components (plain `.svg` imports are still typed as `string` by `vite/client`; use `?react` in code).
 
 ### 4.5. i18n
 
@@ -239,6 +250,8 @@ Not required for this task (decision 11). No tests are written and no test tooli
 | `src/shared/api/filters/*`                                      | new `fetchFilters`, `useFiltersQuery`                                  | wraps `src/shared/temp/filterData.json` |
 | `src/shared/i18n/locales/en/filter.json`                        | new keys                                                               | currently `{}`                          |
 | `src/i18next.d.ts`                                              | fix import paths                                                       | enables typed `t()`                     |
+| `vite.config.ts`                                                | svgr `include` accepts `.svg` and `.svg?react`                         | see 4.4a                                |
+| `src/pages/Home/ui/OptionItem.tsx`                              | new, option row with description tooltip                               |                                         |
 | `src/main.css`                                                  | Tailwind `@theme` tokens (colors, radius, shadow, Inter font)          | see section 10.1                        |
 | SVG assets (`CloseIcon`, `InfoIcon`)                            | new, downloaded from Figma                                             | svgr, `Icon` suffix                     |
 | `src/shared/api/types/Filter`, `SearchRequest`                  | consumed, unchanged                                                    | only touched                            |
@@ -282,18 +295,18 @@ Values read from the design; the filter modal is node `1371:49053` (the `Pop-Up`
   The tick is drawn with a CSS mask/background on `:checked`; no extra DOM.
 
 - Apply button: 184px wide, radius 16, `#FF5F00`, white 16px Semi Bold, centered, 32px below the last divider, 40px to the card bottom.
-- The section title may carry a 16px info icon (seen on "Nutrition", `Vector 8626:71577`). It is the hook for the filter `description`.
+- The section title may carry a 16px info icon (seen on "Nutrition", `Vector 8626:71577`). It is the hook for the filter `description` (shown as a `title` tooltip).
 
 ### 10.3. Confirmation dialog
 
 - Placement: centered over the filter dialog with a dimmed native `::backdrop` (decision 6).
 - Card 1280×296 in the design: white, radius 16, padding 32, shadow above. Title "Do you want to apply new filter" (40px Medium, centered) with a close icon; 120px gap; two 280px buttons side by side with a 32px gap.
-- Secondary ("Use old filter"): white background, 2px `#B4B4B4` border, `#474747` text, radius 16, padding 26/49. Primary ("Apply new filter"): `#FF5F00`, white text. The primary button confirms; the secondary and the close icon cancel.
+- Secondary ("Use old filter"): white background, 2px `#B4B4B4` border, `#474747` text, radius 16, padding 26/49. Primary ("Apply new filter"): `#FF5F00`, white text. The primary button confirms; the secondary ("Use old filter") closes both dialogs without saving; the close icon, Esc and a backdrop click close only the confirm.
 - The design copy ("Use old filter") differs from a generic "Cancel"; the i18n keys in 4.5 use the design copy.
 
 ### 10.4. Assets
 
-- Close icon (`8cf27.svg`), info icon (`fc626.svg`) and the divider line are exported by Figma with temporary URLs (valid 7 days). Download them into the repo at implementation time and import as svgr components with the `Icon` suffix (e.g. `CloseIcon`, `InfoIcon`), as `CLAUDE.md` requires. Dividers become a Tailwind `border-b`, not an image.
+- Close icon (`8cf27.svg`), info icon (`fc626.svg`) and the divider line are exported by Figma with temporary URLs (valid 7 days). (Implementation note: the icons were hand-drawn SVGs instead of Figma exports; replace them with the exports if pixel parity matters.) Download them into the repo at implementation time and import as svgr components with the `Icon` suffix (e.g. `CloseIcon`, `InfoIcon`), as `CLAUDE.md` requires. Dividers become a Tailwind `border-b`, not an image.
 - Do not hotlink Figma URLs.
 
 ## 11. Additional information

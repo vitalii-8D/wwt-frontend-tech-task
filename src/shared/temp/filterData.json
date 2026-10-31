@@ -5,6 +5,7 @@
 			"name": "Meal options",
 			"description": "Choose the type of dining",
 			"type": "OPTION",
+			"allowAll": true,
 			"options": [
 				{
 					"id": "breakfast",

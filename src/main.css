@@ -1,2 +1,49 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
+
+@theme {
+	--font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+	--color-grey-400: #474747;
+	--color-grey-500: #31393c;
+	--color-grey-200: #b4b4b4;
+	--color-grey-50: #f2f2f2;
+	--color-brand: #ff5f00;
+	--radius-card: 16px;
+	--shadow-card: 0 2px 12px rgba(0, 0, 0, 0.14);
+}
+
+@layer base {
+	button:not(:disabled),
+	[type='checkbox']:not(:disabled),
+	label:has([type='checkbox']:not(:disabled)) {
+		cursor: pointer;
+	}
+}
+
+.filter-checkbox {
+	appearance: none;
+	width: 24px;
+	height: 24px;
+	flex-shrink: 0;
+	border: 2px solid var(--color-grey-200);
+	border-radius: 4px;
+	background-color: transparent;
+	background-repeat: no-repeat;
+	background-position: center;
+	cursor: pointer;
+}
+
+.filter-checkbox:hover {
+	background-color: var(--color-grey-50);
+}
+
+.filter-checkbox:focus-visible {
+	outline: none;
+	border-color: var(--color-brand);
+}
+
+.filter-checkbox:checked {
+	background-color: var(--color-grey-500);
+	border-color: var(--color-grey-500);
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E");
+}

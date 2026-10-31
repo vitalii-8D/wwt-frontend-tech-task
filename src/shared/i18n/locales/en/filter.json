@@ -1,1 +1,16 @@
-{}
+{
+	"title": "Filter",
+	"apply": "Apply",
+	"close": "Close",
+	"open": "Filters",
+	"all": "All",
+	"loading": "Loading filters...",
+	"error": "Failed to load filters",
+	"retry": "Retry",
+	"debugTitle": "Saved filter",
+	"confirm": {
+		"title": "Do you want to apply new filter?",
+		"yes": "Apply new filter",
+		"no": "Use old filter"
+	}
+}
