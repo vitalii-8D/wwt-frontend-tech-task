@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 import type { FilterItem } from '@api/types/Filter'
 
 import CloseIcon from '@assets/close.svg?react'
+import { Button } from '@components/Button'
 import { Dialog } from '@components/Dialog'
 import { useFilterStore } from '@store/filterStore'
 
@@ -77,12 +78,12 @@ export const FilterModal = ({ items, onClose }: FilterModalProps) => {
 				))}
 
 				<footer className="sticky bottom-0 z-10 -mb-4 flex justify-center border-t border-grey-200 bg-white pt-4 pb-[max(1rem,env(safe-area-inset-bottom))] sm:static sm:mt-8 sm:mb-0 sm:border-0 sm:pt-0 sm:pb-0 lg:pb-2">
-					<button
+					<Button
 						type="submit"
-						className="w-full h-16 max-w-[184px] rounded-card bg-brand font-semibold text-white"
+						className="w-full max-w-[184px]"
 					>
 						{t('apply')}
-					</button>
+					</Button>
 				</footer>
 			</form>
 

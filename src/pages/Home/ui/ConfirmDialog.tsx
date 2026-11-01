@@ -2,6 +2,7 @@ import { useId } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import CloseIcon from '@assets/close.svg?react'
+import { Button } from '@components/Button'
 import { Dialog } from '@components/Dialog'
 
 interface ConfirmDialogProps {
@@ -41,20 +42,19 @@ export const ConfirmDialog = ({
 				</button>
 			</header>
 			<div className="mt-8 flex items-center flex-col-reverse gap-3 sm:mt-16 sm:flex-row sm:justify-center sm:gap-8 lg:mt-[120px]">
-				<button
-					type="button"
+				<Button
+					variant="secondary"
 					onClick={onDiscard}
-					className="max-w-[280px] w-full rounded-card border-2 border-grey-200 bg-white px-6 h-16 sm:px-[49px] font-semibold text-grey-400 sm:w-[280px]"
+					className="w-full max-w-[280px] sm:w-[280px]"
 				>
 					{t('confirm.no')}
-				</button>
-				<button
-					type="button"
+				</Button>
+				<Button
 					onClick={onConfirm}
-					className="max-w-[280px] w-full rounded-card bg-brand px-6 h-16 sm:px-[49px] font-semibold text-white sm:w-[280px]"
+					className="w-full max-w-[280px] sm:w-[280px]"
 				>
 					{t('confirm.yes')}
-				</button>
+				</Button>
 			</div>
 		</Dialog>
 	)

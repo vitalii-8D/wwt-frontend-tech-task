@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 
 import { useFiltersQuery } from '@api/filters'
 
+import { Button } from '@components/Button'
 import { useFilterStore } from '@store/filterStore'
 
 import { FilterModal } from './FilterModal'
@@ -21,15 +22,15 @@ export const App = () => {
 			</h1>
 
 			<section className="flex w-full flex-col items-center gap-4">
-				<button
-					type="button"
+				<Button
+					size="md"
 					aria-haspopup="dialog"
 					disabled={isPending || isError}
 					onClick={() => setOpen(true)}
-					className="max-w-[280px] rounded-card bg-brand px-8 py-4 font-semibold text-white disabled:opacity-50 sm:w-auto"
+					className="max-w-[280px] sm:w-auto"
 				>
 					{t('open')}
-				</button>
+				</Button>
 				{isPending ? <p>{t('loading')}</p> : null}
 				{isError ? (
 					<p role="alert">
