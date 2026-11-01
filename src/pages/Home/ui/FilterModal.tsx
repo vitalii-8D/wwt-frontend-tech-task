@@ -46,7 +46,7 @@ export const FilterModal = ({ items, onClose }: FilterModalProps) => {
 			className="m-0 h-dvh max-h-none w-full max-w-none scroll-py-20 overflow-y-auto rounded-none bg-white p-4 backdrop:bg-black/40 sm:m-auto sm:h-auto sm:max-h-dvh sm:max-w-7xl sm:rounded-card sm:p-6 lg:p-8"
 		>
 			<form onSubmit={handleSubmit}>
-				<header className="sticky top-0 z-10 -mt-4 flex items-center justify-center border-b border-grey-200 bg-white pt-4 pb-4 sm:relative sm:mt-0 sm:pt-0 sm:pb-8">
+				<header className="sticky top-0 z-10 -mt-4 flex items-center justify-center border-b border-grey-200 bg-white pt-4 pb-4 sm:relative sm:mt-0 sm:pt-0 sm:pb-8 lg:pt-2 lg:pb-[25px]">
 					<h2
 						id={titleId}
 						className="px-10 text-center text-2xl font-medium sm:px-0 sm:text-3xl lg:text-[40px]"
@@ -76,10 +76,10 @@ export const FilterModal = ({ items, onClose }: FilterModalProps) => {
 					/>
 				))}
 
-				<footer className="sticky bottom-0 z-10 -mb-4 flex justify-center border-t border-grey-200 bg-white pt-4 pb-[max(1rem,env(safe-area-inset-bottom))] sm:static sm:mt-8 sm:mb-0 sm:border-0 sm:pt-0 sm:pb-0">
+				<footer className="sticky bottom-0 z-10 -mb-4 flex justify-center border-t border-grey-200 bg-white pt-4 pb-[max(1rem,env(safe-area-inset-bottom))] sm:static sm:mt-8 sm:mb-0 sm:border-0 sm:pt-0 sm:pb-0 lg:pb-2">
 					<button
 						type="submit"
-						className="w-full max-w-[184px] rounded-card bg-brand py-4 font-semibold text-white"
+						className="w-full h-16 max-w-[184px] rounded-card bg-brand font-semibold text-white"
 					>
 						{t('apply')}
 					</button>

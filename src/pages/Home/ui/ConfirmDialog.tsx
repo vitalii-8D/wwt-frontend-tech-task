@@ -44,14 +44,14 @@ export const ConfirmDialog = ({
 				<button
 					type="button"
 					onClick={onDiscard}
-					className="max-w-[280px] w-full rounded-card border-2 border-grey-200 bg-white px-6 py-4 sm:px-[49px] sm:py-[26px] font-semibold text-grey-400 sm:w-[280px]"
+					className="max-w-[280px] w-full rounded-card border-2 border-grey-200 bg-white px-6 h-16 sm:px-[49px] font-semibold text-grey-400 sm:w-[280px]"
 				>
 					{t('confirm.no')}
 				</button>
 				<button
 					type="button"
 					onClick={onConfirm}
-					className="max-w-[280px] w-full rounded-card bg-brand px-6 py-4 sm:px-[49px] sm:py-[26px] font-semibold text-white sm:w-[280px]"
+					className="max-w-[280px] w-full rounded-card bg-brand px-6 h-16 sm:px-[49px] font-semibold text-white sm:w-[280px]"
 				>
 					{t('confirm.yes')}
 				</button>
