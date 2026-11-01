@@ -79,7 +79,7 @@ export const FilterModal = ({ items, onClose }: FilterModalProps) => {
 				<footer className="sticky bottom-0 z-10 -mb-4 flex justify-center border-t border-grey-200 bg-white pt-4 pb-[max(1rem,env(safe-area-inset-bottom))] sm:static sm:mt-8 sm:mb-0 sm:border-0 sm:pt-0 sm:pb-0">
 					<button
 						type="submit"
-						className="w-full rounded-card bg-brand py-4 font-semibold text-white"
+						className="w-full max-w-[184px] rounded-card bg-brand py-4 font-semibold text-white"
 					>
 						{t('apply')}
 					</button>

@@ -26,7 +26,7 @@ export const App = () => {
 					aria-haspopup="dialog"
 					disabled={isPending || isError}
 					onClick={() => setOpen(true)}
-					className="w-full rounded-card bg-brand px-8 py-4 font-semibold text-white disabled:opacity-50 sm:w-auto"
+					className="max-w-[280px] rounded-card bg-brand px-8 py-4 font-semibold text-white disabled:opacity-50 sm:w-auto"
 				>
 					{t('open')}
 				</button>

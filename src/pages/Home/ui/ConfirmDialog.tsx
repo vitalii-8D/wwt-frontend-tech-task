@@ -40,18 +40,18 @@ export const ConfirmDialog = ({
 					<CloseIcon aria-hidden="true" />
 				</button>
 			</header>
-			<div className="mt-8 flex flex-col-reverse gap-3 sm:mt-16 sm:flex-row sm:justify-center sm:gap-8 lg:mt-[120px]">
+			<div className="mt-8 flex items-center flex-col-reverse gap-3 sm:mt-16 sm:flex-row sm:justify-center sm:gap-8 lg:mt-[120px]">
 				<button
 					type="button"
 					onClick={onDiscard}
-					className="w-full rounded-card border-2 border-grey-200 bg-white px-6 py-4 sm:px-[49px] sm:py-[26px] font-semibold text-grey-400 sm:w-[280px]"
+					className="max-w-[280px] w-full rounded-card border-2 border-grey-200 bg-white px-6 py-4 sm:px-[49px] sm:py-[26px] font-semibold text-grey-400 sm:w-[280px]"
 				>
 					{t('confirm.no')}
 				</button>
 				<button
 					type="button"
 					onClick={onConfirm}
-					className="w-full rounded-card bg-brand px-6 py-4 sm:px-[49px] sm:py-[26px] font-semibold text-white sm:w-[280px]"
+					className="max-w-[280px] w-full rounded-card bg-brand px-6 py-4 sm:px-[49px] sm:py-[26px] font-semibold text-white sm:w-[280px]"
 				>
 					{t('confirm.yes')}
 				</button>
