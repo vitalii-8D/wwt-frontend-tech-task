@@ -1,17 +1,18 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
+import { FilterModal } from '@features/filter'
+
 import { useFiltersQuery } from '@api/filters'
 
 import { Button } from '@components/Button'
-import { useFilterStore } from '@store/filterStore'
 
-import { FilterModal } from './FilterModal'
+import { FiltersStatus } from './FiltersStatus'
+import { SavedFilterDebug } from './SavedFilterDebug'
 
 export const App = () => {
-	const { t } = useTranslation('filter')
+	const { t } = useTranslation()
 	const { data, isPending, isError, refetch } = useFiltersQuery()
-	const filter = useFilterStore(state => state.filter)
 	const [isOpen, setOpen] = useState(false)
 
 	return (
@@ -31,27 +32,14 @@ export const App = () => {
 				>
 					{t('open')}
 				</Button>
-				{isPending ? <p>{t('loading')}</p> : null}
-				{isError ? (
-					<p role="alert">
-						{t('error')}{' '}
-						<button
-							type="button"
-							className="underline"
-							onClick={() => refetch()}
-						>
-							{t('retry')}
-						</button>
-					</p>
-				) : null}
+				<FiltersStatus
+					isPending={isPending}
+					isError={isError}
+					onRetry={() => void refetch()}
+				/>
 			</section>
 
-			<section className="w-full">
-				<h2 className="mb-2 text-xl font-medium">{t('debugTitle')}</h2>
-				<pre className="max-w-full overflow-auto rounded-card bg-grey-50 p-4 text-sm">
-					<code>{JSON.stringify(filter, null, 2)}</code>
-				</pre>
-			</section>
+			<SavedFilterDebug />
 
 			{isOpen && data ? (
 				<FilterModal

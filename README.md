@@ -52,6 +52,15 @@ If you install any new technology, describe why you added it and what it’s use
 
 Also, please let us know upfront whether you would like detailed feedback (what exactly was wrong and a score), or if a simple acceptance or rejection response is sufficient
 
+## Dependencies
+
+Packages added on top of the original template, and why:
+
+- `clsx` — composes conditional class names (`cn()` in `src/shared/lib`).
+- `tailwind-merge` — resolves conflicting Tailwind utilities, so a `className` passed to a shared component (for example `Button`) reliably overrides its defaults. `clsx` and `tailwind-merge` are used only through `cn()`.
+
+Removed as unused: `date-fns`, `immer`, `react-router`, `react-router-dom` (none were imported).
+
 ## How to set up the project
 
 All scripts described below (except for _**dependency installation**_) can be used with pnpm instead of npm. They work the same way

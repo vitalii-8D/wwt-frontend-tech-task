@@ -6,6 +6,8 @@ import {
 	useRef
 } from 'react'
 
+import { cn } from '@lib/cn'
+
 interface DialogProps {
 	onClose: () => void
 	labelledBy: string
@@ -59,7 +61,7 @@ export const Dialog = ({
 		<dialog
 			ref={ref}
 			aria-labelledby={labelledBy}
-			className={className}
+			className={cn('bg-white backdrop:bg-black/40', className)}
 			onClick={handleClick}
 			onClose={handleClose}
 		>

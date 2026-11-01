@@ -1,5 +1,7 @@
 import type { ComponentProps } from 'react'
 
+import { cn } from '@lib/cn'
+
 type ButtonVariant = 'primary' | 'secondary'
 type ButtonSize = 'md' | 'lg'
 
@@ -31,14 +33,12 @@ export const Button = ({
 }: ButtonProps) => (
 	<button
 		type={type}
-		className={[
+		className={cn(
 			BASE_STYLES,
 			VARIANT_STYLES[variant],
 			SIZE_STYLES[size],
 			className
-		]
-			.filter(Boolean)
-			.join(' ')}
+		)}
 		{...props}
 	/>
 )

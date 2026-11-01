@@ -26,10 +26,14 @@ CI (`.github/workflows`) runs build, `format:check:all` and `lint:all` on Node 1
 
 ## Architecture
 
+Layers depend downward only: `pages` → `features` → `shared` (never the reverse).
+
 - `src/main.tsx` mounts `App` (`src/pages/Home`) inside `QueryClientProvider` (`src/query.ts` exports the shared `queryClient`) and imports `./shared/i18n` for its side-effect init.
-- `src/shared/` holds cross-cutting code: `api/types`, `i18n`, `temp` (mock API data).
-- i18n: resources are in `src/shared/i18n/locales/en/*.json` (`filter.json`, `not-found.json`), aggregated via `locales/index.ts`. `src/i18next.d.ts` types the resources, but it imports from `../public/locales` and `./constants`, which don't exist (the real files are `src/shared/i18n/locales` and `i18nConstants.ts`). Fix those paths when working on typed `t()`.
-- Path alias `@/*` maps to `src/*` (tsconfig + `vite-tsconfig-paths`).
+- `src/pages/Home`: page composition only (`App`, `FiltersStatus` for loading/error/retry, `SavedFilterDebug` for the JSON view).
+- `src/features/filter`: the filter feature slice. `index.ts` exports only `FilterModal`. `ui/` holds `FilterModal`, `FilterGroup`, `FilterOption`, `ConfirmDialog`; `model/` holds the pure draft logic (`filterDraft.ts`) and the `useFilterDraft` hook (draft state + saving to the store).
+- `src/shared/`: `api` (`filters` react-query hook and mock fetch, `types`), `assets` (SVGs), `components` (`Button`, `Dialog`, `ModalHeader`, `Checkbox`, `InfoTooltip`, each with an `index.ts` barrel), `i18n`, `lib` (`cn()`), `store` (zustand `useFilterStore`), `temp` (mock API data, typed in `filterData.ts`).
+- i18n: resources are in `src/shared/i18n/locales/en/*.json` (currently `filter.json`), aggregated via `locales/index.ts`; `src/shared/i18n/i18n.d.ts` types them and `defaultNS` is `filter`, so `useTranslation()` needs no namespace argument.
+- Path aliases (tsconfig + `vite-tsconfig-paths`): `@/*` → `src/*`, `@api`, `@assets`, `@components`, `@store`, `@temp`, `@lib` → `src/shared/*`, `@features/*` → `src/features/*`, `@pages/*` → `src/pages/*`.
 
 ## Conventions enforced by lint/format
 
@@ -37,5 +41,6 @@ CI (`.github/workflows`) runs build, `format:check:all` and `lint:all` on Node 1
 - Arrow functions only (`prefer-arrow`, `func-style: expression`).
 - `i18next/no-literal-string` is an error: user-facing strings must go through i18n. Otherwise use `// eslint-disable-next-line i18next/no-literal-string`, as `App.tsx` does.
 - `id-length` rule: identifiers must be 2+ characters, except `_ w h e i j k p m t`. `camelcase`, `curly`, `eqeqeq`, `no-use-before-define` and `no-implicit-coercion` are errors.
-- Import SVGs as components with an `Icon` suffix (svgr). Imports must use the `@folder/` aliases, not `@/folder/` or relative paths to assets. Note that only `@/*` is actually defined in tsconfig, so add the matching paths entries before using aliases such as `@api` or `@assets`.
+- Import SVGs as components with an `Icon` suffix (svgr). Imports must use the `@folder/` aliases, not `@/folder/` or relative paths to assets; add a matching tsconfig `paths` entry for any new alias.
+- Compose class names with `cn()` from `@lib/cn` (clsx + tailwind-merge) so a caller's `className` overrides component defaults. Note that tailwind-merge does not know custom theme utilities such as `rounded-card`.
 - Tailwind v4 via `@tailwindcss/vite` (styles in `src/main.css`).

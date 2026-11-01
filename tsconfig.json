@@ -19,6 +19,8 @@
 			"@api/*": ["./src/shared/api/*"],
 			"@assets/*": ["./src/shared/assets/*"],
 			"@components/*": ["./src/shared/components/*"],
+			"@features/*": ["./src/features/*"],
+			"@lib/*": ["./src/shared/lib/*"],
 			"@pages/*": ["./src/pages/*"],
 			"@store/*": ["./src/shared/store/*"],
 			"@temp/*": ["./src/shared/temp/*"]

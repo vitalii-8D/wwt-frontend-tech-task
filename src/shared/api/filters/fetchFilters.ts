@@ -1,13 +1,13 @@
 import type { FilterItem } from '@api/types/Filter'
 
-import data from '@temp/filterData.json'
+import { filterItems } from '@temp/filterData'
 
 const FETCH_DELAY_MS = 1000
 
 export const fetchFilters = async (): Promise<FilterItem[]> => {
 	return new Promise(resolve => {
 		setTimeout(() => {
-			resolve(data.filterItems as FilterItem[])
+			resolve(filterItems)
 		}, FETCH_DELAY_MS)
 	})
 }

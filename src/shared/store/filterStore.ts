@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 
-import type { SearchRequestFilter } from '@api/types/SearchRequest/SearchRequestFilter'
+import type { SearchRequestFilter } from '@api/types/SearchRequest'
 
 interface FilterState {
 	filter: SearchRequestFilter

@@ -3,7 +3,7 @@ import {
 	type FilterItem,
 	FilterType
 } from '@api/types/Filter'
-import type { SearchRequestFilter } from '@api/types/SearchRequest/SearchRequestFilter'
+import type { SearchRequestFilter } from '@api/types/SearchRequest'
 
 export type FilterDraft = Record<string, ReadonlySet<string>>
 
@@ -27,13 +27,19 @@ export const toggleOption = (
 	return { ...draft, [filterId]: next }
 }
 
+export const isAllSelected = (
+	draft: FilterDraft,
+	filter: FilterChoose
+): boolean => {
+	const selected = draft[filter.id]
+	return filter.options.every(option => selected?.has(option.id))
+}
+
 export const toggleAll = (
 	draft: FilterDraft,
 	filter: FilterChoose
 ): FilterDraft => {
-	const current = draft[filter.id]
-	const isAllSelected = filter.options.every(option => current?.has(option.id))
-	const next = isAllSelected
+	const next = isAllSelected(draft, filter)
 		? new Set<string>()
 		: new Set(filter.options.map(option => option.id))
 	return { ...draft, [filter.id]: next }
